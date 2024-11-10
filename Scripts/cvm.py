@@ -49,7 +49,7 @@ class CVM:
     - `Exception`: Para qualquer erro geral durante o processo de download, extração, concatenação ou salvamento.
     """
 
-    def __init__(self):
+    def __init__(self, path_project = None):
         """
         Inicializa a classe `CVM`, configurando os diretórios de trabalho, URLs 
         e os nomes dos arquivos a serem processados.
@@ -59,7 +59,7 @@ class CVM:
                  necessários e define os parâmetros para o download dos dados.
         """
         self.url = 'https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/'
-        self.path_project = dirname(abspath(__file__))
+        self.path_project = dirname(abspath(__file__)) if path_project == None else path_project
         self.path_base = join(self.path_project, '.CVM', 'demonstracoes_financeiras')
         self.path_tmp = join(self.path_base, 'tmp')
         self.path_files_zip = join(self.path_tmp, 'files_zip')
