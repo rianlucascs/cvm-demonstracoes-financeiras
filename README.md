@@ -1,3 +1,7 @@
+# CVM Demonstrações Financeiras
+
+Este projeto automatiza o download, extração e processamento de dados financeiros da Comissão de Valores Mobiliários (CVM). Além disso, possibilita a consulta aos dados financeiros de empresas específicas, visando facilitar a análise e o armazenamento eficiente das informações.
+
 ## Como usar
 
 1. Instalação das bibliotecas
