@@ -218,5 +218,9 @@ class CVM:
         else:
             logging.info(f"O processo já foi executado anteriormente. Para atualização, passe 'update=True'.")
 
-        
-CVM().process_full_flow()
+    def loc(self):
+        pass
+
+
+
+# CVM().loc()
