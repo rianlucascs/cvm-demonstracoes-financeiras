@@ -75,6 +75,7 @@ class CVM:
                       'DFC_MI_con', 'DFC_MI_ind', 'DMPL_con', 'DMPL_ind', 'DRA_con', 'DRA_ind',
                       'DRE_con', 'DRE_ind', 'DVA_con', 'DVA_ind']
 
+
     def _wget_zip(self):
         """
         Baixa os arquivos ZIP da CVM para o diretório especificado.
