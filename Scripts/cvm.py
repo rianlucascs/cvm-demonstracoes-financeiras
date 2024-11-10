@@ -1,13 +1,15 @@
 
 from os.path import dirname, abspath, join, exists
-from os import makedirs, mkdir
+from os import makedirs
 from datetime import date
 import wget
 from zipfile import ZipFile
-from pandas import DataFrame, read_csv, concat
+from pandas import DataFrame, read_csv, concat, read_hdf
 from shutil import rmtree
-
+import requests
+from io import StringIO
 import logging
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CVM:
@@ -46,6 +48,7 @@ class CVM:
     - `json.JSONDecodeError`: Se ocorrer um erro ao decodificar arquivos JSON.
     - `Exception`: Para qualquer erro geral durante o processo de download, extração, concatenação ou salvamento.
     """
+
     def __init__(self):
         """
         Inicializa a classe `CVM`, configurando os diretórios de trabalho, URLs 
@@ -71,11 +74,6 @@ class CVM:
         self.nomes = ['BPA_con', 'BPA_ind', 'BPP_con', 'BPP_ind', 'DFC_MD_con', 'DFC_MD_ind',
                       'DFC_MI_con', 'DFC_MI_ind', 'DMPL_con', 'DMPL_ind', 'DRA_con', 'DRA_ind',
                       'DRE_con', 'DRE_ind', 'DVA_con', 'DVA_ind']
-        
-        makedirs(self.path_base, exist_ok=True)
-        makedirs(self.path_files_zip, exist_ok=True)
-        makedirs(self.path_files_csv, exist_ok=True)
-        makedirs(self.path_data, exist_ok=True)
 
     def _wget_zip(self):
         """
@@ -198,6 +196,12 @@ class CVM:
         logging.info(f"Verificando se o processo precisa ser executado. Atualização solicitada: {update}")
 
         if not exists(self.path_control) or update:
+
+            makedirs(self.path_base, exist_ok=True)
+            makedirs(self.path_files_zip, exist_ok=True)
+            makedirs(self.path_files_csv, exist_ok=True)
+            makedirs(self.path_data, exist_ok=True)
+
             logging.info("Iniciando o download dos dados...")
             self._wget_zip()
 
@@ -218,9 +222,20 @@ class CVM:
         else:
             logging.info(f"O processo já foi executado anteriormente. Para atualização, passe 'update=True'.")
 
-    def loc(self):
-        pass
+    def _table_infos_stocks(self):
+        url = 'https://raw.githubusercontent.com/rianlucascs/b3-scraping-project/master/processed_data/3.%20Empresas%20listadas/todas_empresas_listadas.csv'
+        try:
+            response = requests.get(url)
+        except requests.exceptions.RequestException as e:
+            raise ValueError(f'Erro ao acessar a página: {e}')
+        return read_csv(StringIO(response.text), delimiter=';')
+    
+    def loc(self, symbol : str='VALE', file_name: str = 'BPA_con'):
+        symbol = symbol.upper()
+        table = self._table_infos_stocks()[['codigo', 'nome_do_pregao', 'codigo_de_negociacao', 'classificacao_setorial', 'cnpj', 'atividade_principal']]
+        info_loc = table.loc[table['codigo'] == symbol]
+        atividade_principal = info_loc['atividade_principal'].iloc[0]
+        table_h5 = read_hdf(join(self.path_data, f'itr_cia_aberta_{file_name}_2011-{self.ano_atual}.h5'))
+        return table_h5.loc[table_h5['CNPJ_CIA'] == atividade_principal]
 
 
-
-# CVM().loc()
