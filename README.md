@@ -119,3 +119,13 @@ Este projeto automatiza o download, extração e processamento de dados financei
      - **Valor Adicionado Bruto:** A diferença entre a receita líquida e o custo das mercadorias ou serviços vendidos.
      - **Distribuição de Valor Adicionado:** Como a riqueza gerada foi distribuída, incluindo salários, impostos, lucros e dividendos.
 
+## Contato
+
+Estou à disposição para esclarecer dúvidas ou fornecer mais informações. Você pode entrar em contato através das seguintes opções:
+
+- **LinkedIn:** [Visite meu perfil no LinkedIn](www.linkedin.com/in/rian-lucas)
+- **GitHub:** [Explore meu repositório no GitHub](https://github.com/rianlucascs)
+- **Celular:** +55 61 96437-9500
+
+
+Fico sempre aberto a colaborações e oportunidades de networking!
