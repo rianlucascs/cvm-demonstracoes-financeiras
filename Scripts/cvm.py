@@ -62,6 +62,7 @@ class CVM:
         self.path_files_zip = join(self.path_tmp, 'files_zip')
         self.path_files_csv = join(self.path_tmp, 'files_csv')
         self.path_data = join(self.path_base, 'data')
+        self.path_control = join(self.path_data, '.control')
 
         self.ano_atual = date.today().year
 
@@ -184,19 +185,38 @@ class CVM:
             logging.info(f"O diretório 'tmp' não existe.")
 
 
-    def get(self):
+    def process_full_flow(self, update : bool = False):
         """
         Executa o processo completo de download, extração, concatenação e limpeza.
 
         Este método chama as funções `_wget_zip`, `_extract_zip`, `_concat_files` 
         e `_dell_tmp` para realizar todo o fluxo de download, extração, processamento e limpeza.
 
-        :param None: Nenhum parâmetro é necessário.
+        :param update: Se `True`, o processo será forçado a rodar mesmo que já tenha sido executado antes.
         :return: Nenhum valor retornado. A função processa os dados e registra informações no log.
         """
-        self._wget_zip()
-        self._extract_zip()
-        self._concat_files()
-        self._dell_tmp()
+        logging.info(f"Verificando se o processo precisa ser executado. Atualização solicitada: {update}")
 
-CVM().get()
+        if not exists(self.path_control) or update:
+            logging.info("Iniciando o download dos dados...")
+            self._wget_zip()
+
+            logging.info("Extraindo os arquivos do zip...")
+            self._extract_zip()
+
+            logging.info("Concatenando arquivos extraídos...")
+            self._concat_files()
+
+            logging.info("Removendo arquivos temporários...")
+            self._dell_tmp()
+
+            if not exists(self.path_control):
+                logging.info(f"Criação do diretório de controle: {self.path_control}")
+                makedirs(self.path_control, exist_ok=True)
+
+            logging.info("Processo completo finalizado com sucesso.")
+        else:
+            logging.info(f"O processo já foi executado anteriormente. Para atualização, passe 'update=True'.")
+
+        
+CVM().process_full_flow()
