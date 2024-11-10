@@ -13,34 +13,53 @@ Este projeto automatiza o download, extração e processamento de dados financei
     ```python
     # Importando a biblioteca 'requests' para realizar requisições HTTP
     import requests
+    from os import getcwd
 
     # URL do script Python da classe CVM hospedado no GitHub
     url = 'https://raw.githubusercontent.com/rianlucascs/cvm-demonstracoes-financeiras/master/Scripts/cvm.py'
 
     # Realizando a requisição HTTP para baixar o conteúdo do script
+    # A URL aponta para o script Python hospedado no GitHub, e com o 'requests.get()', estamos baixando esse script.
     response = requests.get(url)
 
     # Usando o 'exec' para executar o código baixado. 
+    # O comando 'exec(response.text)' executa o conteúdo do script que foi baixado. Isso torna a classe 'CVM' 
+    # disponível para ser instanciada e utilizada no código abaixo.
     exec(response.text)
 
-    # Agora que o script foi carregado e a classe CVM está disponível, podemos criar uma instância da classe.
-    cvm = CVM()
+    # Definindo o 'path_project' com o diretório de trabalho atual do script.
+    # O parâmetro 'path_project' é configurado com o diretório onde o script está sendo executado. 
+    # 'getcwd()' retorna o diretório atual e é utilizado para armazenar os dados no local correto.
+    cvm = CVM(path_project=getcwd())
 
-    # Chamando o método process_full_flow, que realiza o download, extração, concatenação e limpeza dos dados
-    # A flag 'update=False' indica que não vamos forçar uma nova execução, caso o processo já tenha sido realizado.
+    # Chamando o método 'process_full_flow', que realiza o download, extração, concatenação e limpeza dos dados.
+    # A flag 'update=False' indica que não será feita uma nova execução, caso o processo já tenha sido realizado anteriormente.
     cvm.process_full_flow(update=False)
 
-    # Exibindo os tipos de demonstrações financeiras disponíveis
+    # Exibindo os tipos de demonstrações financeiras disponíveis.
+    # Após o processamento dos dados pela classe 'CVM', a variável 'nomes' contém os tipos de demonstrações financeiras processados.
     print(cvm.nomes)
 
-    # Exemplo de como acessar uma tabela específica. A função 'loc' foi suposta para buscar os dados financeiros
-    # relacionados à empresa 'VALE' e ao tipo de demonstração 'BPA_con'.
+    # Exemplo de como acessar uma tabela específica.
+    # O método 'loc' é usado para buscar dados financeiros específicos de uma empresa, neste caso, 'VALE', 
+    # e o tipo de demonstração 'BPA_con' (Balanço Patrimonial Consolidad), com base nos dados processados pela classe.
     table = cvm.loc('VALE', 'BPA_con')
 
-    # Exibindo a tabela ou dados relacionados
+    # Exibindo a tabela ou os dados relacionados à empresa 'VALE' e à demonstração 'BPA_con'.
+    # A tabela de dados da empresa será exibida com os detalhes financeiros solicitados.
     print(table)
 
     ```
+
+    Tabela
+    |   | CNPJ_CIA              | DT_REFER | VERSAO | DENOM_CIA | CD_CVM | GRUPO_DFP                             | MOEDA | ESCALA_MOEDA | ORDEM_EXERC | DT_FIM_EXERC | CD_CONTA | DS_CONTA                | VL_CONTA          | ST_CONTA_FIXA |
+    |---|-----------------------|----------|--------|-----------|--------|---------------------------------------|-------|--------------|-------------|--------------|----------|-------------------------|-------------------|---------------|
+    | 86576 | 33.592.510/0001-54     | 2011-03-31 | 1      | VALE S.A. | 4170   | DF Consolidado - Balanço Patrimonial Ativo | REAL  | MIL          | PENÚLTIMO   | 2010-12-31   | 1        | Ativo Total             | 214662114.000000  | S             |
+    | 86577 | 33.592.510/0001-54     | 2011-03-31 | 1      | VALE S.A. | 4170   | DF Consolidado - Balanço Patrimonial Ativo | REAL  | MIL          | ÚLTIMO      | 2011-03-31   | 1        | Ativo Total             | 217320211.000000  | S             |
+    | 86578 | 33.592.510/0001-54     | 2011-03-31 | 1      | VALE S.A. | 4170   | DF Consolidado - Balanço Patrimonial Ativo | REAL  | MIL          | PENÚLTIMO   | 2010-12-31   | 1.01     | Ativo Circulante        | 54268731.000000   | S             |
+    | 86579 | 33.592.510/0001-54     | 2011-03-31 | 1      | VALE S.A. | 4170   | DF Consolidado - Balanço Patrimonial Ativo | REAL  | MIL          | ÚLTIMO      | 2011-03-31   | 1.01     | Ativo Circulante        | 46568993.000000   | S             |
+    | 86580 | 33.592.510/0001-54     | 2011-03-31 | 1      | VALE S.A. | 4170   | DF Consolidado - Balanço Patrimonial Ativo | REAL  | MIL          | PENÚLTIMO   | 2010-12-31   | 1.01.01  | Caixa e Equivalentes de Caixa | 13468958.000000  | S             |
+
 
 ## Sobre os dados
 
