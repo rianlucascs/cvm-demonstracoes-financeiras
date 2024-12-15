@@ -127,7 +127,7 @@ Estou à disposição para esclarecer dúvidas ou fornecer mais informações. V
 
 - **LinkedIn:** [Visite meu perfil no LinkedIn](www.linkedin.com/in/rian-lucas)
 - **GitHub:** [Explore meu repositório no GitHub](https://github.com/rianlucascs)
-- **Celular:** +55 61 96437-9500
+- **Celular:** +55 (61) 996437950
 
 
 Fico sempre aberto a colaborações e oportunidades de networking!
